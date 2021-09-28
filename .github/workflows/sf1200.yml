@@ -60,6 +60,7 @@ jobs:
 
       - name: Add packages
         run: |
+          cd openwrt-18.06
           git clone --depth=1 https://github.com/fumiama/openwrt-passwall.git ./package/passwall
           git clone --depth=1 https://github.com/fumiama/openwrt-packages.git ./package/useful
           git clone --depth=1 https://github.com/fumiama/opackages.git ./package/fumiama
