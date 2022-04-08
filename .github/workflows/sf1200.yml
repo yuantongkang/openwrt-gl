@@ -67,8 +67,7 @@ jobs:
           git clone --depth=1 https://github.com/fumiama/luci-theme-rosy.git ./package/fumiama/luci-theme-rosy
           git clone --depth=1 https://github.com/fumiama/lede.git package/leana
           mv package/leana/package/lean package/
-          mv --suffix .xxxmv_bk package/leana/package/libs/* package/libs/
-          rm -rf package/libs/*.xxxmv_bk
+          mv -n package/leana/package/libs/* package/libs/
           rm -rf package/leana
 
       - name: Update feeds
