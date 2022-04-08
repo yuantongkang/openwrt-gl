@@ -66,7 +66,9 @@ jobs:
           git clone --depth=1 https://github.com/fumiama/opackages.git ./package/fumiama
           git clone --depth=1 https://github.com/fumiama/openwrt-upx.git ./package/fumiama/upx
           git clone --depth=1 https://github.com/fumiama/luci-theme-rosy.git ./package/fumiama/luci-theme-rosy
-          git clone --depth=1 -b packages https://github.com/fumiama/lede.git package/lean
+          git clone --depth=1 https://github.com/fumiama/lede.git package/leana
+          mv package/leana/package/lean package/
+          rm -rf package/leana
 
       - name: Update feeds
         run: |
