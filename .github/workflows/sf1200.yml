@@ -115,6 +115,7 @@ jobs:
           cp -rf $(find ./bin/targets/ -type f) ./artifact/firmware/
           cp -rf $(find ./bin/packages/ -type f -name "*.ipk") ./artifact/package/
           cp -rf $(find ./bin/targets/ -type f -name "*.buildinfo" -o -name "*.manifest") ./artifact/buildinfo/
+          tar -xzvf packages.tgz ./artifact/package/*
 
       - name: Deliver buildinfo
         uses: actions/upload-artifact@v2
@@ -134,11 +135,11 @@ jobs:
           name: OpenWrt_firmware
           path: ./openwrt-18.06/bin/targets/
 
-      - name: Upload release asset
+      - name: Upload release packages
         if: github.event == 'release'
         uses: svenstaro/upload-release-action@v2
         with:
-          repo_token: ${{ secrets.YOURTOKEN }}
-          file: ./openwrt-18.06/artifact/firmware/*
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: packages.tgz
           tag: ${{ github.ref }}
           file_glob: true
