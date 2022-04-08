@@ -11,12 +11,15 @@ name: sf1200
 
 on:
   push:
-    branches: 
-      - openwrt-18.06-siflower
+    tags: 
+      - v*
   # schedule:
   #   - cron: 0 20 * * *
   release:
     types: [published]
+
+env:
+  GITHUB_TOKEN: ${{ github.token }}
 
 jobs:
 
