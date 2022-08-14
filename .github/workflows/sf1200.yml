@@ -88,7 +88,7 @@ jobs:
       - name: Make packages
         run: |
           cd openwrt-18.06
-          make pacage/compile
+          make pacage/luci-app-dockerman/compile
           
       - name: Prepare artifact
         run: |
