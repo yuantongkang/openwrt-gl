@@ -10,9 +10,7 @@
 name: sf1200
 
 on:
-  push:
-    tags: 
-      - v*
+  push
 
 env:
   GITHUB_TOKEN: ${{ github.token }}
@@ -23,7 +21,7 @@ jobs:
 
     name: Build OpenWrt firmware
 
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
 
     if: github.event.repository.owner.id == github.event.sender.id
 
@@ -89,36 +87,19 @@ jobs:
           make download -j8 || make download -j1 V=s
           rm -rf $(find ./dl/ -size -1024c)
           df -h
-
-      - name: Compile firmware
+          
+      - name: Make packages
         run: |
           cd openwrt-18.06
-          make -j$(nproc) || make -j1 V=s
-          echo "======================="
-          echo "Space usage:"
-          echo "======================="
-          df -h
-          echo "======================="
-          du -h ./ --max-depth=1
-          du -h /mnt/openwrt/ --max-depth=1 || true
-
+          make pacage/6in4/compile
+          
       - name: Prepare artifact
         run: |
           cd openwrt-18.06
-          mkdir -p ./artifact/firmware
           mkdir -p ./artifact/package
-          mkdir -p ./artifact/buildinfo
           rm -rf $(find ./bin/targets/ -type d -name "packages")
-          cp -rf $(find ./bin/targets/ -type f) ./artifact/firmware/
           cp -rf $(find ./bin/packages/ -type f -name "*.ipk") ./artifact/package/
-          cp -rf $(find ./bin/targets/ -type f -name "*.buildinfo" -o -name "*.manifest") ./artifact/buildinfo/
           tar -czvf packages.tgz ./artifact/package/*
-
-      - name: Deliver buildinfo
-        uses: actions/upload-artifact@v2
-        with:
-          name: OpenWrt_buildinfo
-          path: ./openwrt-18.06/artifact/buildinfo/
 
       - name: Deliver package
         uses: actions/upload-artifact@v2
@@ -132,10 +113,3 @@ jobs:
           name: OpenWrt_firmware
           path: ./openwrt-18.06/bin/targets/
 
-      - name: Upload release packages
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ./openwrt-18.06/packages.tgz
-          tag: ${{ github.ref }}
-          file_glob: true
