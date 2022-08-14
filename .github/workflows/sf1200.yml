@@ -88,7 +88,7 @@ jobs:
       - name: Make packages
         run: |
           cd openwrt-18.06
-          make pacage/6in4/compile
+          make pacage/python/compile
           
       - name: Prepare artifact
         run: |
